@@ -1,0 +1,6 @@
+{
+    "bridge" : {
+        "host": "IP",
+        "username": "username" 
+    }
+}
