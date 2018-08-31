@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const huejay = require('huejay');
 const program = require('commander');
+process.env.NODE_CONFIG_DIR = __dirname + "/config";
 const config = require('config');
 let client = new huejay.Client({
   host:     config.bridge.host,        
@@ -150,11 +151,17 @@ if (program.setScene) {
     console.log(error.stack);
   });
 }
-function logGroup(group) {
+
+async function logGroup(group) {
   console.log(`Group [${group.id}]: ${group.name}`);
   const allLights = group.lightIds.join(', ');
   console.log('  Light Ids: ' + allLights);
   console.log('  Brightness: ' + group.brightness);
   console.log('  ColorTemp: ' + group.colorTemp);
+  for (const l of group.lightIds) {
+    const light = await client.lights.getById(l);
+    console.log('  ' + light.id + " On:" + light.on + " Reachable:" + light.reachable);
+  }
+  
 }
 
